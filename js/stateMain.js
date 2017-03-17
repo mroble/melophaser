@@ -42,29 +42,33 @@ var StateMain = {
     update: function () {
         game.physics.arcade.collide(this.melo, this.layer);
 
-        if (Math.abs(this.melo.body.velocity.x) > 100)
-        {
-            this.melo.animations.play("walk");
-        } else {
-            this.melo.animations.play("idle");
+        if(this.melo.body.onFloor()) {
+            if (Math.abs(this.melo.body.velocity.x) > 100) {
+                this.melo.animations.play("walk");
+            } else {
+                this.melo.animations.play("idle");
+            }
         }
-        if (this.melo.body.velocity.x>0)
-        {
+
+        if (this.melo.body.velocity.x>0) {
             this.melo.scale.x=1;
-        }
-        else
-        {
+        } else {
             this.melo.scale.x=-1;
         }
 
-        if (cursors.left.isDown)
-        {
+        if (cursors.left.isDown) {
             this.melo.body.velocity.x=-250;
         }
-        if (cursors.right.isDown)
-        {
+        if (cursors.right.isDown) {
             this.melo.body.velocity.x=250;
         }
-    }
 
-}
+        //JUMP
+        if (cursors.up.isDown) {
+            this.melo.body.velocity.y=-150;
+            this.melo.animations.play("jump");
+        }
+    }
+};
+
+
