@@ -65,10 +65,12 @@ var StateMain = {
 
         //JUMP
         if (cursors.up.isDown) {
-            this.melo.body.velocity.y=-150;
+            this.melo.body.velocity.y= -Math.abs(this.melo.body.velocity.x) -150;
             this.melo.animations.play("jump");
         }
     }
+
+    //STOPPING
 };
 
 
