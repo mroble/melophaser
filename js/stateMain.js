@@ -12,6 +12,8 @@ var StateMain = {
     create: function () {
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
+        this.meloSize=.5;
+
         //load map
         this.map=game.add.tilemap("map");
         this.map.addTilesetImage("tiles");
@@ -26,13 +28,16 @@ var StateMain = {
         this.melo.animations.add("walk", [10,11,12,13,14,15,16,17], 12, true);
         this.melo.animations.add("jump", [18,19,20,21,22,23,24,25], 12, false);
 
+        this.melo.scale.x=this.meloSize;
+        this.melo.scale.y=this.meloSize;
+
         this.melo.animations.play("idle");
 
         this.melo.anchor.set(0.5, 0.5);
         game.physics.arcade.enable(this.melo);
         this.melo.body.gravity.y = 100;
         this.melo.body.bounce.set(0.25);
-        this.melo.body.collideWorldBound = true;
+        this.melo.body.collideWorldBounds = true;
 
         game.camera.follow(this.melo);
         cursors=game.input.keyboard.createCursorKeys();
@@ -51,9 +56,9 @@ var StateMain = {
         }
 
         if (this.melo.body.velocity.x>0) {
-            this.melo.scale.x=1;
+            this.melo.scale.x=this.meloSize;
         } else {
-            this.melo.scale.x=-1;
+            this.melo.scale.x=-this.meloSize;
         }
 
         if (cursors.left.isDown) {
@@ -68,9 +73,14 @@ var StateMain = {
             this.melo.body.velocity.y= -Math.abs(this.melo.body.velocity.x) -150;
             this.melo.animations.play("jump");
         }
-    }
 
-    //STOPPING
+        //STOPPING
+        if (cursors.down.isDown) {
+            this.melo.body.velocity.x=0;
+            this.melo.body.velocity.y=0;
+
+        }
+    }
 };
 
 
