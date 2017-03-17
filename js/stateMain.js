@@ -42,7 +42,7 @@ var StateMain = {
     update: function () {
         game.physics.arcade.collide(this.melo, this.layer);
 
-        if (Math.abs(this.melo.velocity.x) > 100)
+        if (Math.abs(this.melo.body.velocity.x) > 100)
         {
             this.melo.animations.play("walk");
         } else {
