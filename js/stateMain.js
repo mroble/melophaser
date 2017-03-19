@@ -5,7 +5,7 @@ var StateMain = {
         game.load.spritesheet("melo", "images/main/robot.png", 80, 111, 28);
         game.load.image("tiles", "images/main/tiles.png");
         game.load.tilemap("map","maps/map1.json", null,Phaser.Tilemap.TILED_JSON);
-        game.load.spritesheet("arrow", "images/ui/arrowButtons.png");
+        game.load.spritesheet("arrow", "images/arrowButtons.png");
 
 
     },
@@ -28,6 +28,16 @@ var StateMain = {
         this.leftArrow=game.add.sprite(-50,25,"arrow");
         this.rightArrow=game.add.sprite(50,25,"arrow");
 
+        this.upArrow.inputEnabled=true;
+        this.downArrow.inputEnabled=true;
+        this.leftArrow.inputEnabled=true;
+        this.rightArrow.inputEnabled=true;
+
+        this.upArrow.events.onInputDown.add(this.doJump,this);
+        this.downArrow.events.onInputDown.add(this.doStop,this);
+        this.leftArrow.events.onInputDown.add(this.goLeft,this);
+        this.rightArrow.events.onInputDown.add(this.goRight,this);
+
         this.upArrow.frame = 0;
         this.downArrow.frame = 1;
         this.leftArrow.frame = 2;
@@ -45,12 +55,7 @@ var StateMain = {
         this.buttonGroup.add(this.rightArrow);
 
         this.buttonGroup.fixedToCamera=true;
-        this.buttonGroup.cameraOffset(100,100);
-
-
-
-
-
+        this.buttonGroup.cameraOffset.setTo(game.width-this.buttonGroup.width/2,game.height-this.buttonGroup.height);
 
 
         this.melo=game.add.sprite(150,150, "melo");
@@ -97,25 +102,45 @@ var StateMain = {
         }
 
         if (cursors.left.isDown) {
-            this.melo.body.velocity.x=-250;
+            this.goLeft();
+
         }
         if (cursors.right.isDown) {
-            this.melo.body.velocity.x=250;
+            this.goRight();
         }
 
         //JUMP
         if (cursors.up.isDown) {
-            this.melo.body.velocity.y= -Math.abs(this.melo.body.velocity.x) -150;
-            this.melo.animations.play("jump");
+            this.doJump();
         }
 
         //STOPPING
         if (cursors.down.isDown) {
-            this.melo.body.velocity.x=0;
-            this.melo.body.velocity.y=0;
+            this.doStop();
 
         }
+    },
+
+    goLeft:function() {
+        this.melo.body.velocity.x=-250;
+    },
+
+    goRight:function(){
+        this.melo.body.velocity.x=250;
+    },
+
+    doStop:function(){
+        this.melo.body.velocity.x=0;
+        this.melo.body.velocity.y=0;
+
+    },
+
+    doJump:function(){
+        this.melo.body.velocity.y= -Math.abs(this.melo.body.velocity.x) -150;
+        this.melo.animations.play("jump");
     }
+
+
 };
 
 
