@@ -41,6 +41,11 @@ var StateMain = {
 
         game.camera.follow(this.melo);
         cursors=game.input.keyboard.createCursorKeys();
+        this.map.setTileIndexCallback(25, this.gotWord,this);
+    },
+
+    gotWord: function(sprite, tile) {
+        this.map.removeTile(tile.x,tile.y, this.layer);
 
     },
 
