@@ -5,6 +5,7 @@ var StateMain = {
         game.load.spritesheet("melo", "images/main/robot.png", 80, 111, 28);
         game.load.image("tiles", "images/main/tiles.png");
         game.load.tilemap("map","maps/map1.json", null,Phaser.Tilemap.TILED_JSON);
+        game.load.spritesheet("arrow", "images/ui/arrowButtons.png");
 
 
     },
@@ -21,6 +22,35 @@ var StateMain = {
         this.layer=this.map.createLayer("Tile Layer 1");
         this.layer.resizeWorld();
         this.map.setCollisionBetween(0,24);
+
+        this.upArrow=game.add.sprite(0,0,"arrow");
+        this.downArrow=game.add.sprite(0,50,"arrow");
+        this.leftArrow=game.add.sprite(-50,25,"arrow");
+        this.rightArrow=game.add.sprite(50,25,"arrow");
+
+        this.upArrow.frame = 0;
+        this.downArrow.frame = 1;
+        this.leftArrow.frame = 2;
+        this.rightArrow.frame = 3;
+
+        this.upArrow.anchor.set(0.5,0.5);
+        this.downArrow.anchor.set(0.5,0.5);
+        this.leftArrow.anchor.set(0.5,0.5);
+        this.rightArrow.anchor.set(0.5,0.5);
+
+        this.buttonGroup = game.add.group();
+        this.buttonGroup.add(this.upArrow);
+        this.buttonGroup.add(this.downArrow);
+        this.buttonGroup.add(this.leftArrow);
+        this.buttonGroup.add(this.rightArrow);
+
+        this.buttonGroup.fixedToCamera=true;
+        this.buttonGroup.cameraOffset(100,100);
+
+
+
+
+
 
 
         this.melo=game.add.sprite(150,150, "melo");
