@@ -8,7 +8,8 @@ var StateMain = {
         game.load.spritesheet("arrow", "images/arrowButtons.png", 60, 60, 4);
         game.load.spritesheet("monster", "images/main/monsters.png",50,50,2);
 
-
+        game.load.image("bar1", "images/timer/bar1.png");
+        game.load.image("bar2", "images/timer/bar2.png");
     },
 
     create: function () {
@@ -58,6 +59,14 @@ var StateMain = {
         this.buttonGroup.fixedToCamera=true;
         this.buttonGroup.cameraOffset.setTo(game.width-this.buttonGroup.width/2,game.height-this.buttonGroup.height);
 
+        this.bar2=game.add.image(0,0,"bar2");
+        this.bar1=game.add.image(0,0,"bar1");
+        this.timerGroup=game.add.group();
+        this.timerGroup.add(this.bar2);
+        this.timerGroup.add(this.bar1);
+        this.timerGroup.fixedToCamera=true;
+        this.timerGroup.cameraOffset.setTo(game.width/2 - this.timerGroup.width/2, 15);
+
 
         this.melo=game.add.sprite(150,150, "melo");
         this.melo.animations.add("idle", [0,1,2,3,4,5,6,7,8,9], 12, true);
@@ -84,10 +93,25 @@ var StateMain = {
         this.map.setTileIndexCallback(25, this.gotWord,this);
 
         this.makeMonsters();
+
+        game.world.bringToTop(this.buttonGroup);
+        game.world.bringToTop(this.timerGroup);
+
+        game.time.events.loop(Phaser.Timer.SECOND/2, this.tick, this);
+
     },
 
-    makeMonsters:function(){
-        for() {
+        tick:function(){
+            if(this.bar1.width>1){
+                this.bar1.width--;
+            } else {
+                //game over;
+            }
+
+        }
+
+    , makeMonsters:function(){
+        for(var i=0;i<10;i++) {
             var monster=this.monsterGroup.getFirstDead();
             var xx=game.rnd.integerInRange(0, game.world.width);
             monster.reset(xx,50);
@@ -96,6 +120,9 @@ var StateMain = {
             monster.body.gravity.y=100;
             monster.body.collideWorldBounds=true;
             monster.name="monster";
+
+            monster.animations.add("move", [0,1],12, true);
+            monster.animations.play("move");
         }
     },
 
@@ -108,9 +135,31 @@ var StateMain = {
 
     },
 
+    reverseMonster:function(monster,layer){
+        if(monster.body.blocked.left==true){
+            monster.body.velocity.x=100;
+        }
+        if(monster.body.blocked.right==true){
+            monster.body.velocity.x=-100;
+        }
+    },
+
+    hitMonster:function(player,monster){
+        if(player.y<monster.y){
+            monster.kill();
+        } else {
+            console.log("game over");
+        }
+
+    },
+
+
+
     update: function () {
         game.physics.arcade.collide(this.melo, this.layer);
         game.physics.arcade.collide(this.monsterGroup, this.layer);
+        game.physics.arcade.collide(this.monsterGroup, this.layer, null, this.reverseMonster);
+        game.physics.arcade.collide(this.melo, this.monsterGroup, null, this.hitMonster);
         if(this.melo.body.onFloor()) {
             if (Math.abs(this.melo.body.velocity.x) > 100) {
                 this.melo.animations.play("walk");
@@ -143,6 +192,10 @@ var StateMain = {
             this.doStop();
 
         }
+    }
+
+    , render:function() {
+        game.debug.bodyInfo(this.melo, 20,20);
     },
 
     goLeft:function() {
