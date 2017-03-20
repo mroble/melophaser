@@ -5,7 +5,8 @@ var StateMain = {
         game.load.spritesheet("melo", "images/main/robot.png", 80, 111, 28);
         game.load.image("tiles", "images/main/tiles.png");
         game.load.tilemap("map","maps/map1.json", null,Phaser.Tilemap.TILED_JSON);
-        game.load.spritesheet("arrow", "images/arrowButtons.png");
+        game.load.spritesheet("arrow", "images/arrowButtons.png", 60, 60, 4);
+        game.load.spritesheet("monster", "images/main/monsters.png",50,50,2);
 
 
     },
@@ -67,9 +68,13 @@ var StateMain = {
         this.melo.scale.y=this.meloSize;
 
         this.melo.animations.play("idle");
-
         this.melo.anchor.set(0.5, 0.5);
-        game.physics.arcade.enable(this.melo);
+
+        this.monsterGroup=game.add.group();
+        this.monsterGroup.createMultiple(10, "monster");
+
+
+        game.physics.arcade.enable([this.melo, this.monsterGroup]);
         this.melo.body.gravity.y = 100;
         this.melo.body.bounce.set(0.25);
         this.melo.body.collideWorldBounds = true;
@@ -77,16 +82,35 @@ var StateMain = {
         game.camera.follow(this.melo);
         cursors=game.input.keyboard.createCursorKeys();
         this.map.setTileIndexCallback(25, this.gotWord,this);
+
+        this.makeMonsters();
+    },
+
+    makeMonsters:function(){
+        for() {
+            var monster=this.monsterGroup.getFirstDead();
+            var xx=game.rnd.integerInRange(0, game.world.width);
+            monster.reset(xx,50);
+            monster.enabled=true;
+            monster.body.velocity.x = -100;
+            monster.body.gravity.y=100;
+            monster.body.collideWorldBounds=true;
+            monster.name="monster";
+        }
     },
 
     gotWord: function(sprite, tile) {
+        if(sprite.name == "monster") {
+            return;
+        }
+
         this.map.removeTile(tile.x,tile.y, this.layer);
 
     },
 
     update: function () {
         game.physics.arcade.collide(this.melo, this.layer);
-
+        game.physics.arcade.collide(this.monsterGroup, this.layer);
         if(this.melo.body.onFloor()) {
             if (Math.abs(this.melo.body.velocity.x) > 100) {
                 this.melo.animations.play("walk");
