@@ -15,8 +15,17 @@ var StateLoad = {
         //PRELOAD EVERYTHING HERE
         game.load.spritesheet("buttons", "images/ui/buttons-red.png", 265, 75);
         game.load.spritesheet("soundButtons", "images/ui/soundButtons-blue.png", 44, 44, 4);
-        game.load.audio("backgroundMusic", "audio/background/piano.mp3");
-        game.load.audio("elephant", "audio/sfx/elephant.mp3");
+        //replace your music below
+        //game.load.audio("backgroundMusic", "audio/background/piano.mp3");
+
+        game.load.spritesheet("melo", "images/main/robot.png", 80, 111, 28);
+        game.load.image("tiles", "images/main/tiles.png");
+
+        game.load.spritesheet("arrow", "images/arrowButtons.png", 60, 60, 4);
+        game.load.spritesheet("monster", "images/main/monsters.png",50,50,2);
+
+        game.load.image("bar1", "images/timer/bar1.png");
+        game.load.image("bar2", "images/timer/bar2.png");
     },
 
     create: function () {
@@ -24,7 +33,7 @@ var StateLoad = {
     },
 
     update: function () {
-        
+
     }
 
 }
