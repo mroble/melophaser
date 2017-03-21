@@ -5,9 +5,13 @@ var StateLoad = {
         var empty = game.add.image(0, 0, "loadingEmpty");
         var full = game.add.image(0, 0, "loadingFull");
 
-        center(empty);
+        empty.anchor.set(0, 0.5);
         full.anchor.set(0, 0.5);
-        full.x = game.world.centerX - empty.width / 2;
+
+        empty.x = game.width / 2 - empty.width / 2;
+        empty.y = game.height / 2 - empty.height / 2;
+
+        full.x = game.width / 2 - full.width / 2;
         full.y = empty.y;
 
         game.load.setPreloadSprite(full);

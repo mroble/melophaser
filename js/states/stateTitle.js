@@ -6,7 +6,7 @@ var StateTitle = {
     }
     , create: function () {
 
-        var titleText = game.add.text(game.world.centerX, game.world.centerY - 100, "GAME TITLE");
+        var titleText = game.add.text(game.world.centerX, game.world.centerY - 100, "Melo v.3.0");
         titleText.fill = "#ffffff";
         titleText.anchor.set(0.5, 0.5);
 

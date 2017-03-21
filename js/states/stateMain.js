@@ -2,23 +2,14 @@ var StateMain = {
 
     preload: function () {
 
-        game.load.spritesheet("melo", "images/main/robot.png", 80, 111, 28);
-        game.load.image("tiles", "images/main/tiles.png");
         game.load.tilemap("map","maps/map1.json", null,Phaser.Tilemap.TILED_JSON);
-        game.load.spritesheet("arrow", "images/arrowButtons.png", 60, 60, 4);
-        game.load.spritesheet("monster", "images/main/monsters.png",50,50,2);
 
-        game.load.image("bar1", "images/timer/bar1.png");
-        game.load.image("bar2", "images/timer/bar2.png");
+
     },
 
     create: function () {
         //reset the score
         score = 0;
-
-        //add some buttons
-        this.btnYes = gameButtons.addButton("yes", -1, -1, this.sayYes, this);
-        this.btnNo = gameButtons.addButton("no", -1, this.btnYes.y - this.btnYes.height, this.sayNo, this);
 
         //add sound buttons
         this.btnMusic = gameButtons.addAudioButton("music", 20, 20, gameButtons.toggleMusic, this);
@@ -123,14 +114,26 @@ var StateMain = {
 
     },
 
-        tick:function(){
-            if(this.bar1.width>1){
-                this.bar1.width--;
-            } else {
-                //game over;
+       tick: function () {
+        if (this.bar1.width > 1) {
+            this.bar1.width--;
+            if (Math.floor(this.bar1.width) == 50) {
+                gameMedia.playSound(this.tickSound);
             }
-
+        } else {
+            //game over!
+            this.doGameOver();
         }
+    }
+    ,
+
+    doGameOver:function()
+    {
+        gameMedia.playSound(this.boomSound);
+        game.state.start("StateOver");
+    }
+
+
 
     , makeMonsters:function(){
         for(var i=0;i<10;i++) {
@@ -171,6 +174,7 @@ var StateMain = {
             monster.kill();
         } else {
             console.log("game over");
+            this.doGameOver();
         }
 
     },
@@ -182,6 +186,7 @@ var StateMain = {
         game.physics.arcade.collide(this.monsterGroup, this.layer);
         game.physics.arcade.collide(this.monsterGroup, this.layer, null, this.reverseMonster);
         game.physics.arcade.collide(this.melo, this.monsterGroup, null, this.hitMonster);
+
         if(this.melo.body.onFloor()) {
             if (Math.abs(this.melo.body.velocity.x) > 100) {
                 this.melo.animations.play("walk");
@@ -214,15 +219,6 @@ var StateMain = {
             this.doStop();
 
         }
-    }
-
-    , sayYes: function () {
-        //play sound by passing it to game media
-        gameMedia.playSound(this.elephant);
-    }
-    , sayNo: function () {
-        this.backgroundMusic.stop();
-        game.state.start("StateOver");
     }
 
     , render:function() {
