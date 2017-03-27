@@ -140,10 +140,10 @@ var StateMain = {
             this.doGameOver();
         }
     }
-    ,
 
-    doGameOver:function()
-    {
+
+
+    , doGameOver:function() {
         //fix the sound below for when you have music
         //gameMedia.playSound(this.boomSound);
         game.state.start("StateOver");
@@ -187,9 +187,6 @@ var StateMain = {
             game.state.start("StateMain");
         }
 
-
-
-
     }
 
     ,reverseMonster:function(monster,layer){
@@ -201,8 +198,9 @@ var StateMain = {
         }
     },
 
-    hitMonster:function(player,monster){
-        if(player.y<monster.y){
+
+    hitMonster:function(melo,monster){
+        if(melo.y < monster.y){
             monster.kill();
         } else {
             this.doGameOver();
@@ -271,11 +269,9 @@ var StateMain = {
     },
 
     doJump:function(){
+        //fix this later
         this.melo.body.velocity.y= -Math.abs(this.melo.body.velocity.x) -150;
         this.melo.animations.play("jump");
     }
 
-
-};
-
-
+}
