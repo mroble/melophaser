@@ -143,11 +143,11 @@ var StateMain = {
 
 
 
-    , doGameOver:function() {
+    //, doGameOver:function() {
         //fix the sound below for when you have music
         //gameMedia.playSound(this.boomSound);
-        game.state.start("StateOver");
-    }
+        //game.state.start("StateOver");
+    //}
 
 
 
@@ -203,7 +203,7 @@ var StateMain = {
         if(melo.y < monster.y){
             monster.kill();
         } else {
-            this.doGameOver();
+            game.state.start("StateOver");
         }
 
     },
