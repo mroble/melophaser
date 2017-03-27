@@ -5,12 +5,11 @@ var highScore;
 var soundOn = true;
 var musicOn = true;
 var wrongTag = "";
-var gameButtons
-var gameMedia
+var gameButtons;
+var gameMedia;
 
-
-var game;
 var cursors;
+var level=1;
 
 var useLandscape = true;
 
@@ -43,11 +42,10 @@ window.onload = function () {
 
 
     //add a state or screen to the game
-    game.state.add("StateMain", StateMain);
     game.state.add("StateLoad", StateLoad);
     game.state.add("StateInit", StateInit);
     game.state.add("StateTitle", StateTitle);
     game.state.add("StateOver", StateOver);
-
+    game.state.add("StateMain", StateMain);
     game.state.start("StateInit");
 }

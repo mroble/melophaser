@@ -15,6 +15,17 @@ var StateMain = {
         this.btnMusic = gameButtons.addAudioButton("music", 20, 20, gameButtons.toggleMusic, this);
         this.btnSound = gameButtons.addAudioButton("sound", 20, 70, gameButtons.toggleSound, this);
 
+        this.audioGroup=game.add.group();
+        this.audioGroup.add(this.btnMusic);
+        this.audioGroup.add(this.btnSound);
+        this.audioGroup.fixedToCamera=true;
+        this.audioGroup.cameraOffset.setTo(0,0);
+
+        //define sounds here, for coin collection etc
+         //this.collectSound = game.add.audio("collect");
+        //this.jumpSound = game.add.audio("jump");
+        //this.boomSound = game.add.audio("boom")
+
         //define background music
         this.backgroundMusic = game.add.audio("backgroundMusic");
         //pass the background music to the gameMedia object
@@ -108,9 +119,13 @@ var StateMain = {
         this.makeMonsters();
 
         game.world.bringToTop(this.buttonGroup);
+
         game.world.bringToTop(this.timerGroup);
 
         game.time.events.loop(Phaser.Timer.SECOND/2, this.tick, this);
+        if (screen.width > 1500) {
+            this.buttonGroup.visible = false;
+        }
 
     },
 
@@ -129,7 +144,8 @@ var StateMain = {
 
     doGameOver:function()
     {
-        gameMedia.playSound(this.boomSound);
+        //fix the sound below for when you have music
+        //gameMedia.playSound(this.boomSound);
         game.state.start("StateOver");
     }
 
@@ -157,10 +173,26 @@ var StateMain = {
         }
 
         this.map.removeTile(tile.x,tile.y, this.layer);
+        this.collected++;
+        //sound below for coins
+        //gameMedia.playSound(this.collectSound);
+         if (this.collected == this.need) {
+            level++;
+            if (level > this.numberOfMaps) {
+                level = 1;
+            }
+            if (this.level > this.numberOfMaps) {
+                level = 1;
+            }
+            game.state.start("StateMain");
+        }
 
-    },
 
-    reverseMonster:function(monster,layer){
+
+
+    }
+
+    ,reverseMonster:function(monster,layer){
         if(monster.body.blocked.left==true){
             monster.body.velocity.x=100;
         }
@@ -173,7 +205,6 @@ var StateMain = {
         if(player.y<monster.y){
             monster.kill();
         } else {
-            console.log("game over");
             this.doGameOver();
         }
 
@@ -222,7 +253,7 @@ var StateMain = {
     }
 
     , render:function() {
-        game.debug.bodyInfo(this.melo, 20,20);
+        //game.debug.bodyInfo(this.melo, 20,20);
     },
 
     goLeft:function() {

@@ -19,8 +19,11 @@ var StateLoad = {
         //PRELOAD EVERYTHING HERE
         game.load.spritesheet("buttons", "images/ui/buttons-red.png", 265, 75);
         game.load.spritesheet("soundButtons", "images/ui/soundButtons-blue.png", 44, 44, 4);
-        //replace your music below
-        //game.load.audio("backgroundMusic", "audio/background/piano.mp3");
+        game.load.audio("backgroundMusic", "audio/background/bubbling.wav");
+        game.load.audio("coin", "audio/sfx/Pickup-Coin.wav");
+        game.load.audio("applause", "audio/sfx/applause.mp3");
+
+
 
         game.load.spritesheet("melo", "images/main/robot.png", 80, 111, 28);
         game.load.image("tiles", "images/main/tiles.png");
